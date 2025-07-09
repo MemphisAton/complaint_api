@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-PROFANITY_API_KEY = os.getenv("PROFANITY_API_KEY")  # можно переименовать переменную в .env тоже
+PROFANITY_API_KEY = os.getenv("PROFANITY_API_KEY")
 
 def clean_profanity(text: str) -> str:
     """Возвращает текст с заменённой нецензурной лексикой (если есть)."""

@@ -17,4 +17,4 @@ class ComplaintResponse(BaseModel):
     category: str
 
     class Config:
-        orm_mode = True  # Важно для работы с ORM-моделью SQLAlchemy
+        orm_mode = True

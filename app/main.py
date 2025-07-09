@@ -11,9 +11,9 @@ from sqlalchemy.sql import and_
 
 from . import categorizer
 from . import models, schemas
+from . import profanity_check
 from . import sentiment
 from .database import engine, SessionLocal
-from . import profanity_check
 
 app = FastAPI()
 
@@ -33,6 +33,8 @@ async def get_db():
 
 @app.post("/complaints", response_model=schemas.ComplaintResponse)
 async def create_complaint(data: schemas.ComplaintCreate, db: AsyncSession = Depends(get_db)):
+    """Создаёт жалобу, очищает от мата, определяет тональность и категорию."""
+
     try:
         # Очистка от мата
         cleaned_text = profanity_check.clean_profanity(data.text)
@@ -62,6 +64,7 @@ async def create_complaint(data: schemas.ComplaintCreate, db: AsyncSession = Dep
 
     except Exception:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error")
+
 
 @app.get("/complaints", response_model=List[schemas.ComplaintResponse])
 async def get_complaints(
@@ -108,5 +111,3 @@ async def update_complaint_status(
     await db.refresh(complaint)
 
     return complaint
-
-
